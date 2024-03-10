@@ -21,7 +21,9 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 // get all products using search & filter(price and rating) feature =>/api/v1/product?keyword=hp&price[gte]=1&price[lte]=50
 // get all products ? pagination => /api/v1/product?page=1
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const resPerPage = 4;
+  // return next(new ErrorHandler("Error for testing ", 400));
+
+  const resPerPage = 8;
   const productCount = await Product.countDocuments();
 
   const apiFeatures = new APIFeatures(Product.find(), req.query)
@@ -29,10 +31,11 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     .filter()
     .pagination(resPerPage);
   const products = await apiFeatures.query;
+
   res.status(200).json({
     success: true,
     message: "all product will display on this route",
-    count: products.length,
+    // count: products.length,
     productCount,
     products,
   });
